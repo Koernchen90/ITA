@@ -1,7 +1,7 @@
 //=============================================================================
-//Name		  	:emitterschaltung.c
-//Author		:MAK
-//Version	  :
+//Name		:emitterschaltung.c
+//Author	:MAK
+//Version	:
 //Description	:Berechnung einer Emiiterschaltung
 //=============================================================================
 #include <stdio.h>

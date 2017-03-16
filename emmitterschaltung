@@ -50,7 +50,7 @@ int main (void)
 
 
 	//Ausgabe
-	printf("\n\nAUSGABE\n", Pr3);
+	printf("\n\nAUSGABE\n");
 	printf("Uce=%.3fV\n", Uce);
 	printf("Ur4=%.3fV\n", Ur4);
 	printf("Ur3=%.3fV\n", Ur3);

@@ -1,0 +1,6 @@
+tar -xzvf liner-1.08.tar.gz
+cd liner-1.08
+make
+su
+(typein password)
+make install

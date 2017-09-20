@@ -1,0 +1,16 @@
+1.00-1.05-- misc.
+1.06     -- lprintf("") replaces fprintf(stderr,""),
+            so output from programs using liner becomes
+            easier.
+         -- QUIT provides program end (via kill(2))
+	 -- CLEAR clears screen
+         -- POLYLINE a polygon or a polyline
+         -- RECTANGLE draws a rectangle
+         -- ARC draws a circle or an arc
+1.06b    -- line.h/text(): fixed error+warnings (J. Homann)
+         -- Makefile: install instead of cp
+1.06c	 -- line.h/polyline(): fixed errors
+	 -- line.h, liner, example[1-4]: corrected permissions
+1.07     -- tried to use autoconf, automake
+1.08     -- fixed errors, line.h renamed to liner.h
+1.09     -- ghostscript output added

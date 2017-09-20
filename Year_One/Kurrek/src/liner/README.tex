@@ -1,0 +1,298 @@
+\documentclass{article}
+%
+\usepackage{german}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\addtolength{\oddsidemargin}{-20mm}
+\addtolength{\topmargin}{-20mm}
+\addtolength{\textwidth}{40mm}
+\addtolength{\textheight}{40mm}
+\renewcommand{\labelenumi}{\alph{enumi})}
+%
+\begin{document}
+\title{liner V.1.09}
+\author{J. Kurrek}
+\date{20.03.2013}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+Dieses Programm dient zur Graphikprogrammierung
+mit einfachen Befehlen wie \verb_line()_,
+\verb_pixel()_ oder \verb_clear()_.
+
+Es versucht damit eine L\"ucke auszuf\"ullen, die seit
+dem Auslaufen der DOS-Programmierung besteht
+und den Informatik- bzw.~Programmierunterricht
+trocken erscheinen l\"asst.
+
+Direkte Graphikprogrammierung unter Benutzeroberfl\"achen
+wie X11 oder MS-Wind.(TM) kann n\"amlich sehr zeitaufw\"andig
+und frustrierend sein: F\"ur ein einfaches 
+\verb_hello_-Fenster sind oft 200 bis 500 Zeilen notwendig. 
+Auf der anderen Seite gibt es komplexe Objektsammlungen,
+die diese Arbeit abnehmen -- dann aber hat man meist 
+als Anf\"anger nur noch die M\"oglichkeit, kleine
+Programmschnipsel einzubinden -- oder aber Schildkr\"oten- oder
+Hamstersimulationen, die zum Lernen gut geeignet sind, 
+die man aber irgendwann wieder verlassen muss, um auf
+den rauhen Boden der Programmierwirklichkeit zu sto\ss{}en.
+
+Mit dem gleichen Ansatz wie \verb_liner_ kann man \"ubrigens
+auch Ghostscript verwenden, auch dies ist optional nutzbar.
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Installation}
+Die Installation wird in der Datei \verb_INSTALL_ beschrieben.
+F\"ur Linux-Nutzer reicht es, die fertig compilierte
+Version zu verwenden und zu installieren (siehe \verb_QUICK INSTALL_).
+
+Nur f\"ur den Fall, dass das nicht klappt, ist die \"ubliche
+Installation notwendig (siehe \verb_NORMAL INSTALL_).
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Einbindung bei der Programmierung}
+Ein Programm, das liner benutzt, muss zuerst
+die Datei \verb_liner.h_ einbinden mit der Zeile
+\begin{verbatim}
+#include "liner.h"
+\end{verbatim}
+Die Datei muss sich dazu im aktuellen Verzeichnis
+befinden. Falls sie sich in einem Include-Verzeichnis
+(\verb_/usr/include_ oder \verb_/usr/local/include_)
+befindet, darf sie mit der folgenden Zeile
+eingebunden werden:
+\begin{verbatim}
+#include <liner.h>
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphikausgabe beginnen}
+\begin{verbatim}
+int liner_init(void)
+\end{verbatim}
+Nach dem Befehl \verb#liner_init();#
+k\"onnen beliebige weitere Graphikbefehle
+benutzt werden. Ein R\"uckgabewert ungleich
+null zeigt einen Fehler an. Das Ausgabefenster 
+hat eine Gr\"o\ss{}e von 640 mal 480 Pixel (Breite mal H\"ohe).
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphikausgabe beginnen f\"ur Fortgeschrittene}
+\begin{verbatim}
+int liner_init_xywh(int initlang, int initaction, 
+                    unsigned int x, unsigned int y,
+                    unsigned int w, unsigned int h)
+\end{verbatim}
+Hier können zus\"atzlich Parameter angegeben werden:
+\begin{enumerate}
+\item \verb_initlang_: 0 für liner-Ausgabe, 1 für Ghostscript
+\item \verb_initaction_: 0 für Bildschirmausgabe, 1 für Datei,
+      2 für Ausgabe auf \verb_stdout_ zur Weitergabe an eine Pipe.
+\item \verb_x_: x-Koordinate des Fensters (vom linken Rand aus)
+\item \verb_y_: y-Koordinate des Fensters (vom oberen Rand aus)
+\item \verb_w_: Breite des Fensters
+\item \verb_h_: H\"ohe des Fensters
+\end{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Strecke zeichnen}
+\begin{verbatim}
+void line(unsigned int x1, unsigned int y1, 
+          unsigned int x2, unsigned int y2)
+\end{verbatim}
+\verb_x1_ und \verb_y1_ sind die Koordinaten des Anfangspunktes, \verb_x2_ und
+\verb_y2_ die Koordinaten des Endpunktes der Strecke. 
+Dieses Beispiel zeichnet ein gro\ss{}es X:
+\begin{verbatim}
+line(1,1,100,100);
+line(1,100,100,1);
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Punkt zeichnen}
+\begin{verbatim}
+void pixel(unsigned int x, unsigned int y)
+\end{verbatim}
+An der Position (x,y) wird ein Punkt gezeichnet.
+Beispiel:
+\begin{verbatim}
+pixel(30,60);
+\end{verbatim}
+Bei der Ausgabe mit Ghostscript wird statt eines
+Punktes eine sehr kurze Linie gezeichnet.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rechteck zeichnen}
+\begin{verbatim}
+void rectangle(unsigned int x1, unsigned int y1,
+               unsigned int x2, unsigned int y2, 
+               int fill);
+\end{verbatim}
+\verb_x1_ und \verb_y1_ sind die Koordinaten einer Ecke, 
+\verb_x2_ und \verb_y2_ die Koordinaten der gegen\"uberliegenden Ecke
+eines Rechtecks mit zwei waagerechten und zwei senkrechten
+Kanten. Ist \verb_fill_ gleich null, bleibt das Rechteck hohl,
+andernfalls wird es gef\"ullt:
+\begin{verbatim}
+rectangle(20,20,100,100,1);
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Kreis oder Kreisbogen zeichnen}
+\begin{verbatim}
+void arc(unsigned int mx, unsigned int my, unsigned int r,
+         int phi1, int phi2, int fill)
+\end{verbatim}
+\verb_mx_ und \verb_my_ sind die Koordinaten des Mittelpunktes, \verb_r_ ist der
+Radius. \verb_phi1_ ist der Startwinkel und \verb_phi1+phi2_ der Endwinkel
+des Kreisbogens (\verb_phi2_ gibt also an, welchen Winkel der Bogen
+umfasst).
+W\"ahlt man also \verb_phi=360_, erh\"alt man einen vollen Kreis.
+Bei \verb_fill_ ungleich null wird der Kreis (oder der Kreisbogen)
+ausgef\"ullt. Beispiel:
+\begin{verbatim}
+arc(210, 210, 205, 45, 270, 1);
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Linienzug zeichnen}
+\begin{verbatim}
+void polyline(unsigned int n, int filled, unsigned int koords[])
+\end{verbatim}
+Mit dieser Funktion kann ein Linienzug, bestehend aus mehreren
+zusammenh\"angenden Strecken, erstellt werden.
+\verb_n_ gibt an, wie viele Punkte vorhanden sind, \verb_filled_ sagt wieder
+aus, ob das Gebilde gef\"ullt werden soll, und
+\verb_koords_ ist ein Array aus den x- und y-Koordinaten der Punkte
+(x0, y0, x1, y1, x2, y2 usw.):
+\begin{verbatim}
+int x[10]={0,100, 0,40, 50,0, 100,40, 100,100};
+polyline(5,1,x);
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphikfenster leeren}
+\begin{verbatim}
+void clear(void);
+\end{verbatim}
+Mit dem Befehl \verb_clear();_ kann man alle bisherige 
+Ausgaben im Graphikfenster l\"oschen.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Farbe \"andern (RGB)}
+\begin{verbatim}
+void color(unsigned int r, unsigned int g, unsigned int b)
+\end{verbatim}
+In \verb_r_, \verb_g_ und \verb_b_ k\"onnen die Helligkeiten der drei Grundfarben
+rot, gr\"un und blau angegeben werden. Nach diesem Befehle erfolgt
+die Ausgabe in der angegebenen Farbe. Beispiel:
+\begin{verbatim}
+color(255,0,255);
+line(2,1,101,100);
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Farbe \"andern (Farbname)}
+-- nicht bei Ghostscript-Ausgabe verf\"ugbar --
+\begin{verbatim}
+void ncolor(const char *t)
+\end{verbatim}
+\verb_t_ ist der englischsprachige Name einer Farbe
+(z.B. \verb_black_). Beispiel:
+\begin{verbatim}
+ncolor(yellow);
+line(3,1,102,100);
+\end{verbatim}
+In der Datei \verb_/etc/X11/rgb.txt_ sind
+alle auf dem System verf\"ugbaren Farbnamen
+abgelegt. Die Zahl der verf\"ugbaren Farben
+ist nat\"urlich (fast immer) gr\"o\ss{}er!
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Text ausgeben}
+\begin{verbatim}
+void text(unsigned int x, unsigned int y, const char *t)
+\end{verbatim}
+Der Text t wird an der Position (x,y) ausgegeben. Beispiel:
+\begin{verbatim}
+text(20,70,"Hallo, Welt!");
+\end{verbatim}
+Der verwendete Zeichensatz ist ISO-8859-1.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Schriftart \"andern}
+-- nur bei Ghostscript-Ausgabe verf\"ugbar --
+\begin{verbatim}
+void setfont(const char *newfnt, double newfntsz)
+\end{verbatim}
+Es wird ab jetzt die Schriftart (\emph{font}) 
+mit dem Namen \verb_newfnt_ in der Gr\"o\ss{}e
+\verb_newfntsz_ verwendet. Beispiel:
+\begin{verbatim}
+setfont("Helvetica", 16.0);
+text(20,70,"Hallo, Welt!");
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Graphikausgabe schlie\ss{}en}
+\begin{verbatim}
+void liner_exit(void)
+\end{verbatim}
+Mit diesem Befehl wird das Programm angewiesen, das Fenster
+zu schlie\ss{}en und sich zu beenden. Anwendung:
+\begin{verbatim}
+liner_exit();
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Benutzung}
+Ein Beispielprogramm ist \verb_example1.c_. Es wird wie gewohnt mit
+\verb_gcc example1.c_ \"ubersetzt in die Datei \verb_a.out_.
+Ein Fehler kann auftreten, wenn man vergessen hat, \verb_liner.h_ einzubinden
+\begin{verbatim}
+example1.c:(.text+0x22): undefined reference to `line'
+\end{verbatim}
+Ebenso gibt es einen Fehler, wenn man die Datei
+\verb_liner.h_ falsch schreibt oder falsch einbindet (s.o.), Fehlermeldung:
+\begin{verbatim}
+example1.c:20:18: error: leiner.h: No such file or directory
+\end{verbatim}
+
+Jetzt kann das Programm \verb_a.out_ aufgerufen werden.
+Dazu muss sich das Programm \verb_liner_ in einem Verzeichnis der
+Suchpfadliste f\"ur Programme befinden. Wenn ja, ist folgender
+Systembefehl erfolgreich:
+\begin{verbatim}
+type liner
+\end{verbatim}%$
+Die aktuelle Suchpfadliste kann
+man sich mit dem folgenden Systembefehl anzeigen lassen:
+\begin{verbatim}
+echo ${PATH} 
+\end{verbatim}%$
+Gut ist es, wenn \verb_liner_ sich z.B.~ im Verzeichnis \verb_/usr/bin_ 
+oder im Verzeichnis \verb_/usr/local/bin_ befindet.
+Dann kann man das Beispielprogramm mit der Eingabe von \verb_./a.out_ 
+ausf\"uhren. 
+Ist das Programm \verb_liner_ nicht vorhanden oder liegt es nicht im richtigen
+Verzeichnis, erh\"alt man nur die Meldung: 
+\begin{verbatim}
+sh: liner: command not found
+\end{verbatim}
+In diesem Fall kann man 
+\begin{itemize}
+\item entweder \verb_liner_ an die richtige Stelle kopieren
+      (z.B.~nach \verb_/usr/local/bin_; empfehlenswert)
+\item oder den kompletten Namen des
+      Verzeichnisses, in dem liner liegt, an den Suchpfad anh\"angen:
+\begin{verbatim}
+PATH="${PATH}:/hier/liegt/liner"
+\end{verbatim}%$
+\end{itemize}
+
+Im Installationsverzeichnis liegen einige Beispieldateien, die man
+ebenfalls ausf\"uhren kann:
+\begin{verbatim}
+./example1
+./example2
+./example3
+./example4
+./example5
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%
+\section{Fehler}
+\begin{itemize}
+\item Einige Funktionen sind noch nicht f\"ur beide Ausgabearten 
+      fertig.
+\item Die Ghostscript-Ausgabe hat den Nullpunkt des Koordinatensystems
+      unten links, die Liner-Ausgabe hat ihn oben links. Das ist noch
+      zu vereinheitlichen.
+\end{itemize}
+%%%%%%%%%%%%%%%%%%
+\end{document}

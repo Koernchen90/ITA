@@ -1,0 +1,36 @@
+//=============================================================================
+//Name			:klassenspiegel1_neu.c
+//Author			:MAK
+//Version		:
+//Description	:C43A - Aufgabe 2a
+//=================================================n============================
+#include <stdio.h>
+
+int main (void)
+{
+	double AMW;
+	int i;
+	double noten[6];
+	double anz = 0.0;
+	double summe = 0.0;
+
+	for(i=0; i<=5; ++i)
+	{
+		printf("Wie oft kam Note %i vor: ", i+1);
+		scanf("%lf", &noten[i]);
+		anz = anz + noten[i];
+		summe = summe + (i+1) * noten[i];
+		/*printf("MerkerSumme: %.0lf \n", summe);
+		printf("MerkerI: %i \n", i);*/
+	}
+	AMW = summe / anz;
+	
+	printf("Klassenspiegel:\n");
+	printf("+---+---+---+---+---+---+---+---+\n");
+	printf("| 1 | 2 | 3 | 4 | 5 | 6 |AMW|ANZ|\n");
+	printf("+---+---+---+---+---+---+---+---+\n");
+	printf("| %.0f | %.0f | %.0f | %.0f | %.0f | %.0f |%.1lf| %.0lf|\n", noten[0], noten[1], noten[2], noten[3], noten[4], noten[5], AMW, anz);
+	printf("+---+---+---+---+---+---+---+---+\n");
+
+	return 0;
+}

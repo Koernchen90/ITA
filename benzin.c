@@ -50,7 +50,7 @@ void output(GtkWidget *fenster, gpointer daten)
 	verbrauch=atof(pverbrauch);
 	g_print("Verbrauch: %lf\n",verbrauch);
 	
-	durchschnitt=weg/verbrauch;
+	durchschnitt=verbrauch/weg*100;
 	g_print("Durchschnittsverbauch: %lf\n",durchschnitt);
 	sprintf(berechnung, "Durchschnittsverbauch: %.2lf l/km", durchschnitt);
 	gtk_label_set_text(GTK_LABEL(pgui->ausgabe), berechnung);	
